@@ -73,10 +73,25 @@ export const ALBUM_TYPES = [
 ] as const
 
 export const COMPLIMENTARY_ITEMS = [
-  { value: 'mini-photo-book', label: 'Mini Photo Book', description: 'Compact 20-page photo book with highlights' },
-  { value: 'table-top-calendar', label: 'Table Top Calendar', description: '12-month desk calendar with your best shots' },
-  { value: 'photo-frames', label: 'Photo Frames', description: 'Set of 3 premium frames with best shots' }
-] as const
+  {
+    value: "mini-photo-book",
+    label: "Mini Photo Book",
+    description: "Compact 20-page photo book with highlights",
+    icon: "BookOpen",
+  },
+  {
+    value: "table-top-calendar",
+    label: "Table Top Calendar",
+    description: "12-month desk calendar with your best shots",
+    icon: "Calendar",
+  },
+  {
+    value: "photo-frames",
+    label: "Photo Frames",
+    description: "Set of 3 premium frames with best shots",
+    icon: "Frame",
+  },
+] as const;
 
 export const VIDEO_ADDONS = [
   { value: 'highlight-video', label: 'Highlight Video', description: '3-5 minute cinematic highlight reel', price: 5000 },

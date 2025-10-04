@@ -4,10 +4,16 @@
 import { useRouter } from "next/navigation";
 import { useBookingStore } from "@/lib/store";
 import { AlbumConfig } from "@/components/AlbumConfig";
+import { CardContainer } from "@/components/CardContainer";
+import { COMPLIMENTARY_ITEMS, VIDEO_ADDONS } from "@/lib/constants";
+import { Check, Gift, Video } from "lucide-react";
+import { ComplimentaryItemButton } from "@/components/ComplimentaryButton";
+import { VideoAddonItem } from "@/components/VideoAddonItem";
 
 export default function Step3Page() {
   const router = useRouter();
-  const { albumConfig, updateAlbumConfig } = useBookingStore();
+  const { albumConfig, updateAlbumConfig, setComplimentaryItem, complimentaryItem, videoAddons, toggleVideoAddon } =
+    useBookingStore();
 
   const handlePagesChange = (pages: number) => {
     updateAlbumConfig({ pages });
@@ -34,6 +40,51 @@ export default function Step3Page() {
         onTypeChange={handleTypeChange}
         pricePerTenPages={500}
       />
+      <CardContainer
+        title="Complimentary Selection"
+        subtitle="Choose one complimentary item with your package"
+        borderColor="[#10B981]"
+        bgColor="bg-green-50/50"
+      >
+        <div className="grid md:grid-cols-3 gap-4">
+          {COMPLIMENTARY_ITEMS.map((item) => (
+            <ComplimentaryItemButton
+              key={item.value}
+              label={item.label}
+              description={item.description}
+              value={item.value}
+              isSelected={complimentaryItem === item.value}
+              onSelect={setComplimentaryItem}
+            />
+          ))}
+        </div>
+      </CardContainer>
+      <CardContainer
+        title="Video Add-Ons"
+        subtitle="Select additional video services. Pricing varies by package."
+        borderColor="[#3B82F6]"
+        bgColor="bg-blue-50/50"
+      >
+        <div className="space-y-3">
+          {VIDEO_ADDONS.map((addon) => (
+            <VideoAddonItem
+              key={addon.value}
+              label={addon.label}
+              description={addon.description}
+              value={addon.value}
+              price={addon.price}
+              isSelected={videoAddons.includes(addon.value)}
+              onToggle={toggleVideoAddon}
+            />
+          ))}
+        </div>
+
+        {videoAddons.length === 0 && (
+          <div className="text-center py-6 text-gray-500 text-sm">
+            No video add-ons selected
+          </div>
+        )}
+      </CardContainer>
 
       {/* Navigation */}
       <div className="flex justify-between">
