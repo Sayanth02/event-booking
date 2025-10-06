@@ -1,13 +1,48 @@
-// app/wizard/step-3/page.tsx
+// app/wizard/step-4/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useBookingStore } from "@/lib/store";
 import { Camera, Video, Calendar, Clock } from "lucide-react";
+import { ALBUM_TYPES } from "@/lib/constants";
+import { videoAddonsService, complimentaryItemsService, VideoAddonOption, ComplimentaryItemOption } from "@/services";
+import { useEffect, useState } from "react";
 
 export default function Step4Page() {
   const router = useRouter();
-  const { clientInfo, eventDetails, selectedFunctions, additionalFunctions } = useBookingStore();
+  const {
+    clientInfo,
+    eventDetails,
+    selectedFunctions,
+    additionalFunctions,
+    albumConfig,
+    complimentaryItem,
+    videoAddons,
+  } = useBookingStore();
+
+  const [videoAddonOptions, setVideoAddonOptions] = useState<VideoAddonOption[]>([]);
+  const [complimentaryItemOptions, setComplimentaryItemOptions] = useState<ComplimentaryItemOption[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch video addons and complimentary items from database
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [addons, items] = await Promise.all([
+          videoAddonsService.getAllVideoAddons(),
+          complimentaryItemsService.getAllComplimentaryItems(),
+        ]);
+        setVideoAddonOptions(addons);
+        setComplimentaryItemOptions(items);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   if (selectedFunctions.length === 0) {
     return (
@@ -32,9 +67,7 @@ export default function Step4Page() {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Step 3: Albums & Add-ons
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Step 4: Package & Price</h2>
         <p className="text-gray-600">Review your selected functions and crew details</p>
       </div>
 
@@ -213,6 +246,74 @@ export default function Step4Page() {
           </div>
         </div>
       )}
+
+      {/* Album Configuration Summary */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">📚 Album Configuration</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 border rounded-lg">
+            <p className="text-sm text-gray-600">Total Pages</p>
+            <p className="text-2xl font-bold text-gray-900">{albumConfig.pages}</p>
+          </div>
+          <div className="p-4 border rounded-lg md:col-span-2">
+            <p className="text-sm text-gray-600">Album Type</p>
+            <p className="text-lg font-medium text-gray-900">
+              {ALBUM_TYPES.find((t) => t.value === albumConfig.type)?.label || albumConfig.type}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Complimentary Selection Summary */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">🎁 Complimentary</h3>
+        {loading ? (
+          <div className="text-sm text-gray-500">Loading...</div>
+        ) : complimentaryItem ? (
+          <div className="flex items-center justify-between p-4 border rounded-lg">
+            <div>
+              <p className="text-sm text-gray-600">Selected Item</p>
+              <p className="text-lg font-medium text-gray-900">
+                {complimentaryItemOptions.find((c) => c.value === complimentaryItem)?.label || complimentaryItem}
+              </p>
+              <p className="text-sm text-gray-500">
+                {complimentaryItemOptions.find((c) => c.value === complimentaryItem)?.description}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="text-sm text-gray-500">No complimentary item selected</div>
+        )}
+      </div>
+
+      {/* Video Add-Ons Summary */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">🎬 Video Add-Ons</h3>
+        {loading ? (
+          <div className="text-sm text-gray-500">Loading...</div>
+        ) : videoAddons.length > 0 ? (
+          <div className="space-y-3">
+            {videoAddons.map((val) => {
+              const addon = videoAddonOptions.find((v) => v.value === val);
+              return (
+                <div key={val} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <p className="text-sm text-gray-600">{addon?.label || val}</p>
+                    {addon?.description && (
+                      <p className="text-xs text-gray-500">{addon.description}</p>
+                    )}
+                  </div>
+                  {addon?.price !== undefined && (
+                    <p className="text-sm font-semibold text-gray-900">₹{addon.price.toLocaleString()}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-sm text-gray-500">No video add-ons selected</div>
+        )}
+      </div>
 
       {/* Navigation */}
       <div className="flex justify-between pt-6">

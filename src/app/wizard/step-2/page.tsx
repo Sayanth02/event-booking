@@ -3,17 +3,51 @@
 
 import { useRouter } from "next/navigation";
 import { useBookingStore } from "@/lib/store";
-import { ADDITIONAL_FUNCTION_TYPES, MAIN_FUNCTIONS, OTHER_FUNCTIONS } from "@/lib/constants";
 import FunctionSelector from "@/components/FunctionSelector";
 import SelectedFunctions from "@/components/SelectedFunctions";
 import { CardContainer } from "@/components/CardContainer";
+import { eventsService, EventFunction } from "@/services";
+import { useEffect, useState } from "react";
 
 export default function Step2Page() {
   const router = useRouter();
   const { selectedFunctions, addSelectedFunction, updateSelectedFunction, removeSelectedFunction, additionalFunctions, addAdditionalFunction, removeAdditionalFunction,updateAdditionalFunction} =
     useBookingStore();
 
-  const allFunctions = [...MAIN_FUNCTIONS, ...OTHER_FUNCTIONS];
+  const [mainFunctions, setMainFunctions] = useState<EventFunction[]>([]);
+  const [otherFunctions, setOtherFunctions] = useState<EventFunction[]>([]);
+  const [additionalFunctionTypes, setAdditionalFunctionTypes] = useState<EventFunction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch event functions from database
+  useEffect(() => {
+    const fetchFunctions = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const [main, other, additional] = await Promise.all([
+          eventsService.getMainFunctions(),
+          eventsService.getOtherFunctions(),
+          eventsService.getAdditionalFunctions(),
+        ]);
+
+        setMainFunctions(main);
+        setOtherFunctions(other);
+        setAdditionalFunctionTypes(additional);
+      } catch (err) {
+        console.error('Error fetching functions:', err);
+        setError('Failed to load event functions. Please refresh the page.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFunctions();
+  }, []);
+
+  const allFunctions = [...mainFunctions, ...otherFunctions];
 
   const handleFunctionToggle = (functionId: string) => {
     const isSelected = selectedFunctions.some(
@@ -34,9 +68,9 @@ export default function Step2Page() {
         date: "",
         startTime: "07:30",
         endTime: "15:30",
-        duration: 8,
-        photographers: 2,
-        cinematographers: 2,
+        duration: funcConfig.defaultHours,
+        photographers: funcConfig.includedPhotographers,
+        cinematographers: funcConfig.includedCinematographers,
       });
     }
   };
@@ -49,7 +83,7 @@ export default function Step2Page() {
       const func = additionalFunctions.find((f) => f.functionId === functionId);
       if (func) removeAdditionalFunction(func.id);
     } else {
-      const funcConfig = ADDITIONAL_FUNCTION_TYPES.find((f) => f.id === functionId);
+      const funcConfig = additionalFunctionTypes.find((f) => f.id === functionId);
       if (!funcConfig) return;
       addAdditionalFunction({
         id: `${functionId}-${Date.now()}`,
@@ -59,8 +93,8 @@ export default function Step2Page() {
         startTime: "07:30",
         endTime: "15:30",
         duration: funcConfig.defaultHours,
-        photographers: 1,
-        cinematographers: 1,
+        photographers: funcConfig.includedPhotographers,
+        cinematographers: funcConfig.includedCinematographers,
       });
     }      
   }
@@ -77,6 +111,33 @@ export default function Step2Page() {
     router.push("/wizard/step-1");
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-600">Loading event functions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+        <p className="text-red-600 mb-4">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <CardContainer
@@ -87,7 +148,7 @@ export default function Step2Page() {
       >
         <div className="space-y-8">
           <FunctionSelector
-            functions={[...MAIN_FUNCTIONS]}
+            functions={mainFunctions}
             selectedFunctions={selectedFunctions}
             onFunctionToggle={handleFunctionToggle}
             colorScheme="blue"
@@ -100,7 +161,7 @@ export default function Step2Page() {
             <p className="font-xl">Other Functions</p>
           </div>
           <FunctionSelector
-            functions={[...OTHER_FUNCTIONS]}
+            functions={otherFunctions}
             selectedFunctions={selectedFunctions}
             onFunctionToggle={handleFunctionToggle}
             colorScheme="purple"
@@ -126,7 +187,7 @@ export default function Step2Page() {
       >
         <div className="space-y-6">
           <FunctionSelector
-            functions={[...ADDITIONAL_FUNCTION_TYPES]}
+            functions={additionalFunctionTypes}
             selectedFunctions={additionalFunctions}
             onFunctionToggle={handleAdditionalToggle}
             colorScheme="purple"

@@ -11,6 +11,8 @@ interface AlbumConfigProps {
   type: string;
   onPagesChange: (pages: number) => void;
   onTypeChange: (type: string) => void;
+  basePages?: number;
+  pagesIncrement?: number;
   pricePerTenPages?: number;
 }
 
@@ -19,23 +21,25 @@ export const AlbumConfig: React.FC<AlbumConfigProps> = ({
   type,
   onPagesChange,
   onTypeChange,
+  basePages = 60,
+  pagesIncrement = 10,
   pricePerTenPages = 500,
 }) => {
   const handleIncrement = () => {
-    onPagesChange(pages + 10);
+    onPagesChange(pages + pagesIncrement);
   };
 
   const handleDecrement = () => {
-    if (pages > 60) {
-      onPagesChange(pages - 10);
+    if (pages > basePages) {
+      onPagesChange(pages - pagesIncrement);
     }
   };
 
-  const extraPages = Math.max(0, pages - 60);
-  const extraCost = (extraPages / 10) * pricePerTenPages;
+  const extraPages = Math.max(0, pages - basePages);
+  const extraCost = (extraPages / pagesIncrement) * pricePerTenPages;
 
   return (
-    <CardContainer title="Album Configuration" subtitle="Base: 60 pages  Recommended minimum: 60 pages " borderColor="#ef4444" bgColor="bg-red-50/50">
+    <CardContainer title="Album Configuration" subtitle={`Base: ${basePages} pages  Recommended minimum: ${basePages} pages`} borderColor="#ef4444" bgColor="bg-red-50/50">
       {/* Header with base/recommended */}
       {/* <div className="mb-6 border border-rose-200 bg-rose-50 rounded-lg p-4">
         <div className="flex items-center justify-between">
@@ -53,7 +57,7 @@ export const AlbumConfig: React.FC<AlbumConfigProps> = ({
         <div className="flex items-center">
           <button
             onClick={handleDecrement}
-            disabled={pages <= 60}
+            disabled={pages <= basePages}
             className="flex items-center justify-center w-10 h-10 rounded-md border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Minus className="w-4 h-4 text-gray-600" />
@@ -70,14 +74,14 @@ export const AlbumConfig: React.FC<AlbumConfigProps> = ({
             <Plus className="w-4 h-4 text-gray-600" />
           </button>
           <button
-            onClick={() => onPagesChange(60)}
+            onClick={() => onPagesChange(basePages)}
             className="ml-3 px-3 h-10 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Reset
           </button>
         </div>
         <p className="text-xs text-gray-500 mt-2">
-          You can add more pages in increments of 10 for ₹{pricePerTenPages} per 10 pages
+          You can add more pages in increments of {pagesIncrement} for ₹{pricePerTenPages} per {pagesIncrement} pages
         </p>
       </div>
 
