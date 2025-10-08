@@ -1,5 +1,6 @@
 // app/wizard/step-2/components/FunctionSelector.tsx
 import FunctionButton from "./FunctionButton";
+import { Heart } from "lucide-react";
 
 interface FunctionSelectorProps {
   title?: string;
@@ -38,7 +39,10 @@ export default function FunctionSelector({
 
       {showWeddingLabel && (
         <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-          <h3 className="text-sm font-semibold text-gray-800">❤️ Wedding Functions</h3>
+          <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+            <Heart className="w-4 h-4 text-pink-600" />
+            Wedding Functions
+          </h3>
           <p className="text-xs text-gray-500 mt-1">
             Classic Memories, Signature Luxury, Gold Moments, Premium Royal
           </p>

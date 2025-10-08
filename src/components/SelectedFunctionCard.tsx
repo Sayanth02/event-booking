@@ -1,4 +1,5 @@
 import { Camera, Video } from 'lucide-react';
+import { getFunctionIcon } from './icons';
 import CrewCounter from './CrewCounter';
 
 interface SelectedFunctionCardProps {
@@ -60,17 +61,18 @@ export default function SelectedFunctionCard({
 }: SelectedFunctionCardProps) {
   // Calculate actual duration from start and end times
   const actualDuration = calculateDuration(func.startTime, func.endTime);
+  const Icon = getFunctionIcon(func.name || func.icon);
   return (
-    <div className="border border-gray-200 rounded-xl p-5 space-y-4 bg-white shadow-sm">
+    <div className="border border-gray-200 rounded-xl p-5 space-y-4 bg-white">
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-gray-100">
         <div className="flex items-center space-x-3">
-          <span className="text-2xl">{func.icon || '🎉'}</span>
+          <Icon className="w-5 h-5 text-gray-700" />
           <span className="font-semibold text-gray-800 text-lg">{func.name}</span>
         </div>
         <button
           onClick={() => onRemove(func.id)}
-          className="text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 px-4 py-1.5 rounded-md transition-colors border border-red-200"
+          className="text-sm font-medium text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-md transition-colors border border-red-200"
         >
           Remove
         </button>

@@ -184,7 +184,7 @@ export default function Step2Page() {
         title="Main Event&Functions"
         subtitle="Select your main and other functions & configure crew and timing"
         borderColor="#2563eb"
-        bgColor="bg-white"
+        bgColor="bg-blue-100/50"
       >
         <div className="space-y-8">
           <FunctionSelector
@@ -223,7 +223,7 @@ export default function Step2Page() {
         title="Additional Functions"
         subtitle="Add extra events with individual crew assignments"
         borderColor="#7c3aed"
-        bgColor="bg-white"
+        bgColor="bg-violet-300/20"
       >
         <div className="space-y-6">
           <FunctionSelector

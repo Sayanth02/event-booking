@@ -221,33 +221,6 @@ export default function Step1Page() {
             )}
           </div>
 
-          {/* Event Types */}
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Event Type(s) <span className="text-red-500">*</span>
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {EVENT_TYPES.map((eventType) => (
-                <label
-                  key={eventType}
-                  className="flex items-center space-x-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedEventTypes.includes(eventType)}
-                    onChange={() => toggleEventType(eventType)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{eventType}</span>
-                </label>
-              ))}
-            </div>
-            {errors.eventTypes && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.eventTypes.message}
-              </p>
-            )}
-          </div> */}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Event Location */}
