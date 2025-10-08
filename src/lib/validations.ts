@@ -16,7 +16,7 @@ export const step1Schema = z.object({
 
   // Event Details
   bookingType: z.string().min(1, "Please select a booking type"),
-  eventLocation: z.string().optional(),
+  eventLocation: z.string().min(2, "Please Provide the event location"),
   eventDate: z.string().optional(),
   guestCount: z.string().optional(),
   budgetRange: z.string().optional(),

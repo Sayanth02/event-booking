@@ -12,6 +12,7 @@ export { albumConfigService, AlbumConfigService } from './albumConfig.service';
 export { complimentaryItemsService, ComplimentaryItemsService } from './complimentaryItems.service';
 export { pricingConfigService, PricingConfigService } from './pricingConfig.service';
 export { pricingService, PricingService } from './pricing.service';
+export { bookingService, BookingService } from './booking.service';
 
 // Export types
 export type { 
@@ -31,5 +32,10 @@ export type {
   PricingConfiguration,
   PricingBreakdown,
   FunctionPricing,
-  AlbumPricing
+  AlbumPricing,
+  BookingDB,
+  BookingInput,
+  BookingResponse,
+  BookingStatus,
+  PaymentStatus
 } from '@/types/events';

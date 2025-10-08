@@ -265,8 +265,8 @@ export const useBookingStore = create<BookingState>()(
       partialize: (state) => ({
         clientInfo: state.clientInfo,
         eventDetails: state.eventDetails,
+        selectedFunctions: state.selectedFunctions,
         crewSelection: state.crewSelection,
-        // functionInfo: state.functionInfo,
         additionalFunctions: state.additionalFunctions,
         albumConfig: state.albumConfig,
         complimentaryItem: state.complimentaryItem,

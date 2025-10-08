@@ -2,6 +2,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import WizardProgress from "@/components/WizardProgress";
 import { WIZARD_STEPS } from "@/lib/constants";
 
@@ -11,6 +12,11 @@ export default function WizardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  // Scroll to top when pathname changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   // Determine current step from pathname
   const currentStep =

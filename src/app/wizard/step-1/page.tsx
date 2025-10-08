@@ -192,7 +192,7 @@ export default function Step1Page() {
       </CardContainer>
 
       {/* Event Summary Section */}
-      <CardContainer title="Event Summary" >
+      <CardContainer title="Event Summary">
         <div className="space-y-4">
           {/* Booking Type */}
           <div>
@@ -256,7 +256,7 @@ export default function Step1Page() {
                 htmlFor="eventLocation"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Event Location
+                Event Location <span className="text-red-500">*</span>
               </label>
               <input
                 {...register("eventLocation")}

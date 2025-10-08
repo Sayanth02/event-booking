@@ -205,3 +205,130 @@ export interface PricingBreakdown {
   advance: number;
   balance: number;
 }
+
+// ==================== Bookings ====================
+
+// Booking status types
+export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
+export type PaymentStatus = 'unpaid' | 'advance_paid' | 'fully_paid' | 'refunded';
+
+// Database type for bookings table
+export interface BookingDB {
+  id: string;
+  booking_reference: string;
+  
+  // Client Information
+  client_name: string;
+  client_phone: string;
+  client_whatsapp: string | null;
+  client_email: string | null;
+  client_home_address: string | null;
+  client_current_location: string | null;
+  
+  // Event Details
+  booking_type: string;
+  event_location: string;
+  event_date: string;
+  guest_count: string | null;
+  budget_range: string | null;
+  
+  // Selected Functions
+  selected_functions: SelectedFunction[];
+  additional_functions: SelectedFunction[];
+  
+  // Crew Information
+  total_photographers: number;
+  total_cinematographers: number;
+  main_event_start_time: string | null;
+  main_event_end_time: string | null;
+  
+  // Album Configuration
+  album_type: string;
+  album_pages: number;
+  
+  // Add-ons
+  video_addons: string[];
+  complimentary_item: string | null;
+  
+  // Package & Pricing
+  selected_package: string | null;
+  selected_package_id: string | null;
+  total_price: number;
+  advance_amount: number;
+  balance_amount: number;
+  pricing_breakdown: PricingBreakdown | null;
+  
+  // Status
+  booking_status: BookingStatus;
+  payment_status: PaymentStatus;
+  
+  // Terms & Signature
+  digital_signature: string;
+  terms_accepted: boolean;
+  terms_accepted_at: string | null;
+  
+  // Metadata
+  created_at: string;
+  updated_at: string;
+  
+  // PDF
+  pdf_generated: boolean;
+  pdf_url: string | null;
+  pdf_generated_at: string | null;
+}
+
+// Input type for creating a booking
+export interface BookingInput {
+  // Client Information
+  client_name: string;
+  client_phone: string;
+  client_whatsapp?: string;
+  client_email?: string;
+  client_home_address?: string;
+  client_current_location?: string;
+  
+  // Event Details
+  booking_type: string;
+  event_location: string;
+  event_date: string;
+  guest_count?: string;
+  budget_range?: string;
+  
+  // Selected Functions
+  selected_functions: SelectedFunction[];
+  additional_functions: SelectedFunction[];
+  
+  // Crew Information
+  total_photographers: number;
+  total_cinematographers: number;
+  main_event_start_time?: string;
+  main_event_end_time?: string;
+  
+  // Album Configuration
+  album_type: string;
+  album_pages: number;
+  
+  // Add-ons
+  video_addons: string[];
+  complimentary_item?: string;
+  
+  // Package & Pricing
+  selected_package?: string;
+  selected_package_id?: string;
+  total_price: number;
+  advance_amount: number;
+  balance_amount: number;
+  pricing_breakdown?: PricingBreakdown;
+  
+  // Terms & Signature
+  digital_signature: string;
+  terms_accepted: boolean;
+}
+
+// Booking response type
+export interface BookingResponse {
+  success: boolean;
+  booking?: BookingDB;
+  bookingReference?: string;
+  error?: string;
+}
