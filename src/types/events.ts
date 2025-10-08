@@ -12,6 +12,7 @@ export interface Event {
   included_hours: number;
   included_photographers: number;
   included_cinematographers: number;
+  extra_hour_rate: number;
   is_active: boolean;
   sort_order: number;
   created_at: string;
@@ -41,6 +42,7 @@ export interface EventFunction {
   flatPrice: number;
   includedPhotographers: number;
   includedCinematographers: number;
+  extraHourRate: number;
 }
 
 // Selected function in store
@@ -131,4 +133,75 @@ export interface ComplimentaryItemOption {
   label: string;
   description: string;
   icon: string;
+}
+
+// ==================== Pricing Configuration ====================
+
+// Database type for pricing_config table
+export interface PricingConfigDB {
+  config_key: string;
+  config_value: number;
+  description: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+// Frontend pricing configuration type
+export interface PricingConfiguration {
+  extraCrewFlatFee: number;
+  taxPercentage: number;
+  advancePercentage: number;
+}
+
+// ==================== Pricing Breakdown ====================
+
+// Individual function pricing breakdown
+export interface FunctionPricing {
+  functionId: string;
+  functionName: string;
+  basePrice: number;
+  extraHoursCost: number;
+  extraCrewCost: number;
+  totalFunctionCost: number;
+  details: {
+    duration: number;
+    includedHours: number;
+    extraHours: number;
+    photographers: number;
+    includedPhotographers: number;
+    cinematographers: number;
+    includedCinematographers: number;
+    extraCrewCount: number;
+  };
+}
+
+// Album pricing breakdown
+export interface AlbumPricing {
+  basePrice: number;
+  extraPagesCost: number;
+  totalAlbumCost: number;
+  details: {
+    pages: number;
+    basePages: number;
+    extraPages: number;
+    albumType: string;
+    multiplier: number;
+  };
+}
+
+// Overall pricing breakdown
+export interface PricingBreakdown {
+  functions: FunctionPricing[];
+  album: AlbumPricing;
+  videoAddons: {
+    slug: string;
+    label: string;
+    price: number;
+  }[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  advance: number;
+  balance: number;
 }

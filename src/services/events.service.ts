@@ -103,6 +103,7 @@ export class EventsService {
       flatPrice: record.flat_price,
       includedPhotographers: record.included_photographers,
       includedCinematographers: record.included_cinematographers,
+      extraHourRate: record.extra_hour_rate,
     };
   }
 }

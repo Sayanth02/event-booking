@@ -1,5 +1,6 @@
 import {create} from 'zustand'
 import {persist} from 'zustand/middleware'
+import { PricingBreakdown } from '@/types/events'
 
 export interface ClientInfo {
   fullName: string;
@@ -12,7 +13,6 @@ export interface ClientInfo {
 
 export interface EventDetails {
   bookingType: string;
-  // eventTypes: string[];
   eventLocation: string;
   eventDate: string;
   guestCount: string;
@@ -21,7 +21,7 @@ export interface EventDetails {
 
 export interface SelectedFunction {
   id: string;
-  functionId: string; // 'engagement', 'wedding', etc.
+  functionId: string; 
   name: string;
   date: string;
   startTime: string;
@@ -79,6 +79,7 @@ export interface BookingState {
   totalPrice: number;
   advanceAmount: number;
   balanceAmount: number;
+  pricingBreakdown: PricingBreakdown | null;
 
   // Actions
   updateClientInfo: (data: Partial<ClientInfo>) => void;
@@ -104,6 +105,7 @@ export interface BookingState {
     packageId: string,
     price: number
   ) => void;
+  setPricingBreakdown: (breakdown: PricingBreakdown) => void;
   calculatePricing: () => void;
   resetForm: () => void;
 }
@@ -146,6 +148,7 @@ const initialState = {
   totalPrice: 0,
   advanceAmount: 0,
   balanceAmount: 0,
+  pricingBreakdown: null,
 };
 
 
@@ -235,6 +238,14 @@ export const useBookingStore = create<BookingState>()(
           };
         }),
 
+      setPricingBreakdown: (breakdown) =>
+        set({
+          pricingBreakdown: breakdown,
+          totalPrice: breakdown.total,
+          advanceAmount: breakdown.advance,
+          balanceAmount: breakdown.balance,
+        }),
+
       calculatePricing: () => {
         const state = get();
         // This will be called from the pricing engine
@@ -263,6 +274,7 @@ export const useBookingStore = create<BookingState>()(
         selectedPackage: state.selectedPackage,
         selectedPackageId: state.selectedPackageId,
         totalPrice: state.totalPrice,
+        pricingBreakdown: state.pricingBreakdown,
       }),
     }
   )

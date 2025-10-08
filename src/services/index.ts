@@ -10,6 +10,8 @@ export { eventsService, EventsService } from './events.service';
 export { videoAddonsService, VideoAddonsService } from './videoAddons.service';
 export { albumConfigService, AlbumConfigService } from './albumConfig.service';
 export { complimentaryItemsService, ComplimentaryItemsService } from './complimentaryItems.service';
+export { pricingConfigService, PricingConfigService } from './pricingConfig.service';
+export { pricingService, PricingService } from './pricing.service';
 
 // Export types
 export type { 
@@ -24,5 +26,10 @@ export type {
   AlbumConfigDB,
   AlbumConfiguration,
   ComplimentaryItem,
-  ComplimentaryItemOption
+  ComplimentaryItemOption,
+  PricingConfigDB,
+  PricingConfiguration,
+  PricingBreakdown,
+  FunctionPricing,
+  AlbumPricing
 } from '@/types/events';

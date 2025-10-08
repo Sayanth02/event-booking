@@ -49,6 +49,39 @@ export default function Step2Page() {
 
   const allFunctions = [...mainFunctions, ...otherFunctions];
 
+  // Helper function to calculate duration in hours from start and end time
+  const calculateDuration = (startTime: string, endTime: string): number => {
+    if (!startTime || !endTime) return 0;
+    
+    const [startHour, startMin] = startTime.split(':').map(Number);
+    const [endHour, endMin] = endTime.split(':').map(Number);
+    
+    const startMinutes = startHour * 60 + startMin;
+    let endMinutes = endHour * 60 + endMin;
+    
+    // Handle case where end time is on the next day
+    if (endMinutes < startMinutes) {
+      endMinutes += 24 * 60;
+    }
+    
+    const durationMinutes = endMinutes - startMinutes;
+    return Math.round((durationMinutes / 60) * 10) / 10; // Round to 1 decimal place
+  };
+
+  // Helper function to calculate end time from start time and duration (in hours)
+  const calculateEndTime = (startTime: string, durationHours: number): string => {
+    if (!startTime || !durationHours) return "";
+    
+    const [startHour, startMin] = startTime.split(':').map(Number);
+    const startMinutes = startHour * 60 + startMin;
+    const endMinutes = startMinutes + (durationHours * 60);
+    
+    const endHour = Math.floor(endMinutes / 60) % 24;
+    const endMin = endMinutes % 60;
+    
+    return `${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`;
+  };
+
   const handleFunctionToggle = (functionId: string) => {
     const isSelected = selectedFunctions.some(
       (f) => f.functionId === functionId
@@ -61,13 +94,16 @@ export default function Step2Page() {
       const funcConfig = allFunctions.find((f) => f.id === functionId);
       if (!funcConfig) return;
 
+      const defaultStartTime = "07:30";
+      const calculatedEndTime = calculateEndTime(defaultStartTime, funcConfig.defaultHours);
+      
       addSelectedFunction({
         id: `${functionId}-${Date.now()}`,
         functionId: functionId,
         name: funcConfig.label,
         date: "",
-        startTime: "07:30",
-        endTime: "15:30",
+        startTime: defaultStartTime,
+        endTime: calculatedEndTime,
         duration: funcConfig.defaultHours,
         photographers: funcConfig.includedPhotographers,
         cinematographers: funcConfig.includedCinematographers,
@@ -85,13 +121,17 @@ export default function Step2Page() {
     } else {
       const funcConfig = additionalFunctionTypes.find((f) => f.id === functionId);
       if (!funcConfig) return;
+      
+      const defaultStartTime = "07:30";
+      const calculatedEndTime = calculateEndTime(defaultStartTime, funcConfig.defaultHours);
+      
       addAdditionalFunction({
         id: `${functionId}-${Date.now()}`,
         functionId: functionId,
         name: funcConfig.label,
         date: "",
-        startTime: "07:30",
-        endTime: "15:30",
+        startTime: defaultStartTime,
+        endTime: calculatedEndTime,
         duration: funcConfig.defaultHours,
         photographers: funcConfig.includedPhotographers,
         cinematographers: funcConfig.includedCinematographers,
