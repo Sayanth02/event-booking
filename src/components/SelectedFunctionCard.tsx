@@ -63,23 +63,23 @@ export default function SelectedFunctionCard({
   const actualDuration = calculateDuration(func.startTime, func.endTime);
   const Icon = getFunctionIcon(func.name || func.icon);
   return (
-    <div className="border border-gray-200 rounded-xl p-5 space-y-4 bg-white">
+    <div className="border border-gray-200 rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4 bg-white">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-        <div className="flex items-center space-x-3">
-          <Icon className="w-5 h-5 text-gray-700" />
-          <span className="font-semibold text-gray-800 text-lg">{func.name}</span>
+      <div className="flex items-center justify-between pb-2 sm:pb-3 border-b border-gray-100 flex-wrap gap-2">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+          <span className="font-semibold text-gray-800 text-base sm:text-lg">{func.name}</span>
         </div>
         <button
           onClick={() => onRemove(func.id)}
-          className="text-sm font-medium text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-md transition-colors border border-red-200"
+          className="text-xs sm:text-sm font-medium text-red-600 hover:bg-red-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md transition-colors border border-red-200"
         >
           Remove
         </button>
       </div>
 
       {/* Date and Time Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1">Date</label>
           <input
@@ -119,8 +119,8 @@ export default function SelectedFunctionCard({
       </div>
 
       {/* Duration Display */}
-      <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-        <div className="flex justify-between items-center">
+      <div className="bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <span className="text-sm text-gray-600">
             Duration: {actualDuration > 0 ? formatDuration(func.startTime, func.endTime) : 'Set times to calculate'}
             {func.duration && actualDuration !== func.duration && (
@@ -140,9 +140,9 @@ export default function SelectedFunctionCard({
       </div>
 
       {/* Crew Section */}
-      <div className="space-y-3 pt-3 border-t border-gray-100">
-        <p className="text-sm font-medium text-gray-800">Crew for this function</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+      <div className="space-y-2 sm:space-y-3 pt-2 sm:pt-3 border-t border-gray-100">
+        <p className="text-xs sm:text-sm font-medium text-gray-800">Crew for this function</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-x-6 sm:gap-y-3">
           <CrewCounter
             label={
               <span className="flex items-center"><Camera className="w-4 h-4 mr-2 text-gray-500" /> Photographers</span>

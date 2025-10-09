@@ -26,30 +26,30 @@ export default function FunctionSelector({
   };
 
   return (
-    <div className="p-1">
+    <div className="p-1 sm:p-2">
       {title && (
-        <div className="flex items-center mb-2">
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+        <div className="flex items-center mb-2 sm:mb-3">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">{title}</h2>
         </div>
       )}
 
       {description && (
-        <p className="text-sm text-gray-500 mb-4">{description}</p>
+        <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">{description}</p>
       )}
 
       {showWeddingLabel && (
-        <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-          <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-            <Heart className="w-4 h-4 text-pink-600" />
+        <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <h3 className="text-xs sm:text-sm font-semibold text-gray-800 flex items-center gap-2">
+            <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-pink-600" />
             Wedding Functions
           </h3>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-1">
             Classic Memories, Signature Luxury, Gold Moments, Premium Royal
           </p>
         </div>
       )}
 
-      <div className="grid grid-flow-col auto-cols-fr gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
         {functions.map((func) => (
           <FunctionButton
             key={func.id}

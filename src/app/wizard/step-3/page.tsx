@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useBookingStore } from "@/lib/store";
 import { AlbumConfig } from "@/components/AlbumConfig";
 import { CardContainer } from "@/components/CardContainer";
-import { Check, Gift, Video } from "lucide-react";
 import { ComplimentaryItemButton } from "@/components/ComplimentaryButton";
 import { VideoAddonItem } from "@/components/VideoAddonItem";
 import { videoAddonsService, albumConfigService, complimentaryItemsService, VideoAddonOption, AlbumConfiguration, ComplimentaryItemOption } from "@/services";

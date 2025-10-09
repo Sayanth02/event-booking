@@ -26,20 +26,20 @@ export const CardContainer: React.FC<CardContainerProps> = ({
 
   return (
     <div
-      className={`${bgColor} rounded-lg shadow-md p-6 border-l-4`}
+      className={`${bgColor} rounded-lg shadow-md p-3 sm:p-4 md:p-6 border-l-4`}
       style={{ borderLeftColor: resolvedBorderColor }}
     >
       {title && (
-        <div className="mb-6">
-          <h3 className="text-base font-medium text-gray-900 flex items-center">
+        <div className="mb-4 sm:mb-5 md:mb-6">
+          <h3 className="text-sm sm:text-base font-medium text-gray-900 flex items-center">
             <span
-              className="w-2 h-2 rounded-full mr-2"
+              className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-2"
               style={{ backgroundColor: resolvedBorderColor }}
             ></span>
             {title}
           </h3>
           {subtitle && (
-            <p className="text-[14px] text-gray-500 mt-1">{subtitle}</p>
+            <p className="text-xs sm:text-[13px] md:text-[14px] text-gray-500 mt-1">{subtitle}</p>
           )}
         </div>
       )}

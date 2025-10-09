@@ -16,9 +16,9 @@ export default function SelectedFunctions({
   onRemove,
 }: SelectedFunctionsProps) {
   return (
-    <div className="pt-6">
-      <h3 className="text-xl font-semibold mb-4 px-6 text-gray-900">{title}</h3>
-      <div className="space-y-4">
+    <div className="pt-4 sm:pt-6">
+      <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 px-2 sm:px-6 text-gray-900">{title}</h3>
+      <div className="space-y-3 sm:space-y-4">
         {selectedFunctions.map((func) => (
           <SelectedFunctionCard
             key={func.id}

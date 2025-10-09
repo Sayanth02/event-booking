@@ -33,16 +33,6 @@ export default function Step1Page() {
     },
   });
 
-  // const selectedEventTypes = watch("eventTypes") || [];
-
-  // const toggleEventType = (eventType: string) => {
-  //   const current = selectedEventTypes;
-  //   const updated = current.includes(eventType)
-  //     ? current.filter((t) => t !== eventType)
-  //     : [...current, eventType];
-  //   setValue("eventTypes", updated);
-  // };
-
   const onSubmit = (data: Step1FormData) => {
     // Save to store
     updateClientInfo({

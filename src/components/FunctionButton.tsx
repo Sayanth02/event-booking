@@ -35,19 +35,21 @@ export default function FunctionButton({
     <button
       type="button"
       onClick={onToggle}
-      className={`relative p-4 border rounded-lg transition-all text-center bg-white ${
+      className={`relative p-3 sm:p-4 border rounded-lg transition-all text-center bg-white min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center ${
         isSelected ? scheme.selected : scheme.hover
       }`}
     >
       {isSelected && (
-        <div className="absolute top-2 right-2">
-          <Check className={`w-4 h-4 ${scheme.check}`} />
+        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2">
+          <Check className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${scheme.check}`} />
         </div>
       )}
-      <div className="mb-2 flex items-center justify-center">
-        <Icon className="w-5 h-5 text-gray-700" />
+      <div className="mb-1.5 sm:mb-2 flex items-center justify-center">
+        <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
       </div>
-      <div className="text-sm font-small text-gray-900">{func.label}</div>
+      <div className="text-xs sm:text-sm font-medium text-gray-900 leading-tight break-words px-1">
+        {func.label}
+      </div>
     </button>
   );
 }

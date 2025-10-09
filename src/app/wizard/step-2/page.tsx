@@ -179,14 +179,14 @@ export default function Step2Page() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-6 md:space-y-8">
       <CardContainer
         title="Main Event&Functions"
         subtitle="Select your main and other functions & configure crew and timing"
         borderColor="#2563eb"
         bgColor="bg-blue-100/50"
       >
-        <div className="space-y-8">
+        <div className="space-y-4 sm:space-y-6 md:space-y-8">
           <FunctionSelector
             functions={mainFunctions}
             selectedFunctions={selectedFunctions}
@@ -195,10 +195,10 @@ export default function Step2Page() {
             showWeddingLabel
           />
 
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-3 sm:my-4 border-gray-200" />
 
           <div className="mb-1">
-            <p className="font-xl">Other Functions</p>
+            <p className="text-base sm:text-lg font-medium">Other Functions</p>
           </div>
           <FunctionSelector
             functions={otherFunctions}
@@ -225,7 +225,7 @@ export default function Step2Page() {
         borderColor="#7c3aed"
         bgColor="bg-violet-300/20"
       >
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <FunctionSelector
             functions={additionalFunctionTypes}
             selectedFunctions={additionalFunctions}
@@ -246,16 +246,16 @@ export default function Step2Page() {
       </CardContainer>
 
       {/* Navigation */}
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-2 sm:gap-4">
         <button
           onClick={() => router.push("/wizard/step-1")}
-          className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+          className="px-3 sm:px-4 md:px-6 py-2 border border-gray-300 rounded-md text-sm sm:text-base text-gray-700 hover:bg-gray-50"
         >
           ← Previous
         </button>
         <button
           onClick={handleNext}
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="px-3 sm:px-4 md:px-6 py-2 bg-blue-600 text-white text-sm sm:text-base rounded-md hover:bg-blue-700"
         >
           Next →
         </button>
