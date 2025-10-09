@@ -18,6 +18,7 @@ export default function Step1Page() {
   const router = useRouter();
   const { clientInfo, eventDetails, updateClientInfo, updateEventDetails } =
     useBookingStore();
+  const todayStr = new Date().toISOString().split('T')[0];
 
   const {
     register,
@@ -211,7 +212,6 @@ export default function Step1Page() {
             )}
           </div>
 
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Event Location */}
             <div>
@@ -228,6 +228,9 @@ export default function Step1Page() {
                 placeholder="Enter event location"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              {errors.eventLocation && (
+                <p className="mt-1 text-sm text-red-600">{errors.eventLocation.message}</p>
+              )}
             </div>
 
             {/* Event Date */}
@@ -236,14 +239,18 @@ export default function Step1Page() {
                 htmlFor="eventDate"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Event Date
+                Event Date <span className="text-red-500">*</span>
               </label>
               <input
                 {...register("eventDate")}
                 type="date"
                 id="eventDate"
+                min={todayStr}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              {errors.eventDate && (
+                <p className="mt-1 text-sm text-red-600">{errors.eventDate.message}</p>
+              )}
             </div>
 
             {/* Guest Range */}

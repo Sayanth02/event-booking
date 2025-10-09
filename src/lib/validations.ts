@@ -16,8 +16,22 @@ export const step1Schema = z.object({
 
   // Event Details
   bookingType: z.string().min(1, "Please select a booking type"),
-  eventLocation: z.string().min(2, "Please Provide the event location"),
-  eventDate: z.string().optional(),
+  eventLocation: z
+    .string()
+    .refine((v) => v.trim().length >= 2, {
+      message: "Event location is required",
+    }),
+  eventDate: z
+    .string()
+    .min(1, "Please provide the event date")
+    .refine((val) => {
+      const d = new Date(val);
+      if (Number.isNaN(d.getTime())) return false;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      d.setHours(0, 0, 0, 0);
+      return d >= today; // not in the past
+    }, { message: "Event date cannot be in the past" }),
   guestCount: z.string().optional(),
   budgetRange: z.string().optional(),
 });

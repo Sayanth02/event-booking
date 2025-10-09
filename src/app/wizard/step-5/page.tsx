@@ -33,6 +33,8 @@ export default function Step5Page() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [bookingReference, setBookingReference] = useState<string | null>(null);
 
   // Fetch video addons and complimentary items from database
   useEffect(() => {
@@ -75,11 +77,11 @@ export default function Step5Page() {
 
   const handleSubmit = async () => {
     if (!termsAccepted) {
-      alert("Please accept the terms and conditions");
+      setSubmitError("Please accept the terms and conditions");
       return;
     }
     if (!digitalSignature.trim()) {
-      alert("Please provide your digital signature");
+      setSubmitError("Please provide your digital signature");
       return;
     }
 
@@ -150,11 +152,9 @@ export default function Step5Page() {
         throw new Error(result.error || 'Failed to submit booking');
       }
 
-      // Success! Show booking reference and redirect
-      alert(`Booking submitted successfully!\n\nBooking Reference: ${result.bookingReference}\n\nPlease save this reference number for future communication.`);
-      
-      // Optionally redirect to a success page or reset the form
-      router.push(`/booking-confirmation?ref=${result.bookingReference}`);
+      // Success! Show booking reference using a modal
+      setBookingReference(result.bookingReference);
+      setShowSuccessModal(true);
     } catch (error) {
       console.error('Error submitting booking:', error);
       setSubmitError(error instanceof Error ? error.message : 'Failed to submit booking. Please try again.');
@@ -362,6 +362,67 @@ export default function Step5Page() {
           {submitting ? "Submitting..." : "Confirm Booking & Submit"}
         </button>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowSuccessModal(false)} />
+          <div className="relative z-10 w-full max-w-md mx-auto bg-white rounded-lg shadow-xl border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-lg font-semibold text-gray-900">Booking Confirmed</h4>
+              <button
+                aria-label="Close"
+                onClick={() => setShowSuccessModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Your booking has been submitted successfully. Save your reference number for future communication.
+            </p>
+            <div className="bg-gray-50 rounded-md border border-gray-200 p-3 flex items-center justify-between mb-4">
+              <div>
+                <p className="text-xs text-gray-500">Booking Reference</p>
+                <p className="font-mono text-base font-semibold text-gray-800">{bookingReference}</p>
+              </div>
+              <button
+                onClick={async () => {
+                  if (bookingReference) {
+                    try {
+                      await navigator.clipboard.writeText(bookingReference);
+                    } catch {
+                      // no-op
+                    }
+                  }
+                }}
+                className="ml-3 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-100"
+              >
+                Copy
+              </button>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={() => {
+                  if (bookingReference) {
+                    setShowSuccessModal(false);
+                    router.push(`/booking-confirmation?ref=${bookingReference}`);
+                  }
+                }}
+                className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                View Confirmation
+              </button>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Navigation */}
       <div className="flex justify-between pt-6">
